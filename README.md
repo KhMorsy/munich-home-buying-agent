@@ -60,4 +60,11 @@ LANGCHAIN_ENDPOINT=https://eu.api.smith.langchain.com
 |---|---|
 | **A** Brain/memory/orchestrator | Wired |
 | **B** Market intelligence | Wired into `agent/graph.py` (`SUBAGENTS`, `search_listings`, skills) |
-| **C** Telegram / outreach / evals | Not on `main` yet |
+| **C** Telegram / outreach / evals | Wired (`send_telegram`, outreach HITL, evals) |
+
+## Deployed (EU)
+- URL: `https://munich-home-buying-agent-f56e0da3152a599e974f4ecb12878735.eu.langgraph.app`
+- Assistant: `agent`
+- Status UI: [LangSmith Deployments (EU)](https://eu.smith.langchain.com)
+- Local check: `python scripts/setup_check.py` then `langgraph dev`
+- Remote scan: `python scripts/daily_scan.py --remote`
