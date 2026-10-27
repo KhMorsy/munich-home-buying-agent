@@ -12,7 +12,6 @@ from pathlib import Path
 
 from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, FilesystemBackend, StateBackend, StoreBackend
-from langgraph.store.memory import InMemoryStore
 
 from agent.config import DEFAULT_USER_ID, LANGSMITH_ENDPOINT, ORCH_MODEL
 from agent.prompts import ORCHESTRATOR_PROMPT
@@ -87,9 +86,8 @@ def _build_backend():
     return CompositeBackend(default=StateBackend(), routes=routes)
 
 
-# Local / Studio: InMemoryStore. On LangSmith Deployment, omit store= to use
-# the platform store, or set LANGGRAPH_STORE accordingly.
-_store = InMemoryStore()
+# Do not pass store=InMemoryStore(): LangGraph API / LangSmith Deployment inject
+# the platform store. Memory tools still fall back via agent.tools.store_util.
 
 _tools = [
     *MEMORY_TOOLS,
@@ -116,7 +114,6 @@ agent = create_deep_agent(
     interrupt_on=_interrupt_on,
     middleware=list(LIMIT_MIDDLEWARE) if LIMIT_MIDDLEWARE else (),
     backend=_build_backend(),
-    store=_store,
     skills=_skills,
     name="munich-home-buying-agent",
 )
