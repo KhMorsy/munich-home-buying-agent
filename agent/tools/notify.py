@@ -10,6 +10,7 @@ import os
 
 import httpx
 from langchain_core.tools import tool
+from langsmith import traceable
 
 from agent.config import ROOT  # noqa: F401  (importing config loads .env)
 
@@ -22,6 +23,7 @@ class TelegramError(RuntimeError):
     """Raised by send_message when Telegram is unconfigured or rejects the call."""
 
 
+@traceable(run_type="tool", name="telegram_sendMessage")
 def send_message(text: str, chat_id: str | None = None) -> dict:
     """Send plain text to `chat_id` (default TELEGRAM_CHAT_ID). Returns the Telegram message."""
     token = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
