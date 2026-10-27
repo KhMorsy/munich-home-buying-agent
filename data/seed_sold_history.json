@@ -1,0 +1,302 @@
+[
+  {
+    "comp_id": "sold-schw-01",
+    "district": "Schwabing",
+    "address": "Hohenzollernstr. 17, München",
+    "sqm": 68,
+    "rooms": 2.5,
+    "price": 813000,
+    "date": "2026-05-14",
+    "condition": "good"
+  },
+  {
+    "comp_id": "sold-schw-02",
+    "district": "Schwabing",
+    "address": "Kurfürstenstr. 24, München",
+    "sqm": 82,
+    "rooms": 3,
+    "price": 951000,
+    "date": "2026-06-02",
+    "condition": "good"
+  },
+  {
+    "comp_id": "sold-schw-03",
+    "district": "Schwabing",
+    "address": "Belgradstr. 31, München",
+    "sqm": 54,
+    "rooms": 2,
+    "price": 659000,
+    "date": "2026-06-27",
+    "condition": "renovated"
+  },
+  {
+    "comp_id": "sold-schw-04",
+    "district": "Schwabing",
+    "address": "Leopoldstr. 38, München",
+    "sqm": 95,
+    "rooms": 3.5,
+    "price": 1083000,
+    "date": "2026-07-19",
+    "condition": "good"
+  },
+  {
+    "comp_id": "sold-schw-05",
+    "district": "Schwabing",
+    "address": "Ainmillerstr. 45, München",
+    "sqm": 76,
+    "rooms": 3,
+    "price": 950000,
+    "date": "2026-08-30",
+    "condition": "renovated"
+  },
+  {
+    "comp_id": "sold-schw-06",
+    "district": "Schwabing",
+    "address": "Clemensstr. 52, München",
+    "sqm": 88,
+    "rooms": 3,
+    "price": 959000,
+    "date": "2026-09-21",
+    "condition": "dated"
+  },
+  {
+    "comp_id": "sold-maxv-01",
+    "district": "Maxvorstadt",
+    "address": "Türkenstr. 17, München",
+    "sqm": 60,
+    "rooms": 2,
+    "price": 756000,
+    "date": "2026-05-08",
+    "condition": "renovated"
+  },
+  {
+    "comp_id": "sold-maxv-02",
+    "district": "Maxvorstadt",
+    "address": "Augustenstr. 24, München",
+    "sqm": 74,
+    "rooms": 3,
+    "price": 895000,
+    "date": "2026-06-11",
+    "condition": "good"
+  },
+  {
+    "comp_id": "sold-maxv-03",
+    "district": "Maxvorstadt",
+    "address": "Schellingstr. 31, München",
+    "sqm": 48,
+    "rooms": 1.5,
+    "price": 619000,
+    "date": "2026-07-03",
+    "condition": "good"
+  },
+  {
+    "comp_id": "sold-maxv-04",
+    "district": "Maxvorstadt",
+    "address": "Gabelsbergerstr. 38, München",
+    "sqm": 90,
+    "rooms": 3.5,
+    "price": 1071000,
+    "date": "2026-08-12",
+    "condition": "good"
+  },
+  {
+    "comp_id": "sold-maxv-05",
+    "district": "Maxvorstadt",
+    "address": "Theresienstr. 45, München",
+    "sqm": 66,
+    "rooms": 2.5,
+    "price": 818000,
+    "date": "2026-09-05",
+    "condition": "good"
+  },
+  {
+    "comp_id": "sold-maxv-06",
+    "district": "Maxvorstadt",
+    "address": "Heßstr. 52, München",
+    "sqm": 105,
+    "rooms": 4,
+    "price": 1228000,
+    "date": "2026-10-01",
+    "condition": "dated"
+  },
+  {
+    "comp_id": "sold-send-01",
+    "district": "Sendling",
+    "address": "Plinganserstr. 17, München",
+    "sqm": 72,
+    "rooms": 3,
+    "price": 706000,
+    "date": "2026-05-20",
+    "condition": "good"
+  },
+  {
+    "comp_id": "sold-send-02",
+    "district": "Sendling",
+    "address": "Daiserstr. 24, München",
+    "sqm": 58,
+    "rooms": 2,
+    "price": 586000,
+    "date": "2026-06-15",
+    "condition": "renovated"
+  },
+  {
+    "comp_id": "sold-send-03",
+    "district": "Sendling",
+    "address": "Lindwurmstr. 31, München",
+    "sqm": 85,
+    "rooms": 3,
+    "price": 808000,
+    "date": "2026-07-09",
+    "condition": "good"
+  },
+  {
+    "comp_id": "sold-send-04",
+    "district": "Sendling",
+    "address": "Fallstr. 38, München",
+    "sqm": 64,
+    "rooms": 2.5,
+    "price": 634000,
+    "date": "2026-08-04",
+    "condition": "good"
+  },
+  {
+    "comp_id": "sold-send-05",
+    "district": "Sendling",
+    "address": "Implerstr. 45, München",
+    "sqm": 95,
+    "rooms": 4,
+    "price": 884000,
+    "date": "2026-09-12",
+    "condition": "dated"
+  },
+  {
+    "comp_id": "sold-send-06",
+    "district": "Sendling",
+    "address": "Brudermühlstr. 52, München",
+    "sqm": 78,
+    "rooms": 3,
+    "price": 811000,
+    "date": "2026-10-08",
+    "condition": "renovated"
+  },
+  {
+    "comp_id": "sold-pasi-01",
+    "district": "Pasing",
+    "address": "Landsberger Str. 17, München",
+    "sqm": 74,
+    "rooms": 3,
+    "price": 659000,
+    "date": "2026-05-25",
+    "condition": "good"
+  },
+  {
+    "comp_id": "sold-pasi-02",
+    "district": "Pasing",
+    "address": "Bäckerstr. 24, München",
+    "sqm": 56,
+    "rooms": 2,
+    "price": 515000,
+    "date": "2026-06-19",
+    "condition": "good"
+  },
+  {
+    "comp_id": "sold-pasi-03",
+    "district": "Pasing",
+    "address": "Gleichmannstr. 31, München",
+    "sqm": 98,
+    "rooms": 4,
+    "price": 853000,
+    "date": "2026-07-22",
+    "condition": "good"
+  },
+  {
+    "comp_id": "sold-pasi-04",
+    "district": "Pasing",
+    "address": "Am Knie 38, München",
+    "sqm": 82,
+    "rooms": 3,
+    "price": 771000,
+    "date": "2026-08-18",
+    "condition": "renovated"
+  },
+  {
+    "comp_id": "sold-pasi-05",
+    "district": "Pasing",
+    "address": "Planegger Str. 45, München",
+    "sqm": 130,
+    "rooms": 5,
+    "price": 1079000,
+    "date": "2026-09-25",
+    "condition": "good"
+  },
+  {
+    "comp_id": "sold-pasi-06",
+    "district": "Pasing",
+    "address": "Offenbachstr. 52, München",
+    "sqm": 65,
+    "rooms": 2.5,
+    "price": 585000,
+    "date": "2026-10-14",
+    "condition": "good"
+  },
+  {
+    "comp_id": "sold-trud-01",
+    "district": "Trudering",
+    "address": "Wasserburger Landstr. 17, München",
+    "sqm": 80,
+    "rooms": 3,
+    "price": 688000,
+    "date": "2026-05-30",
+    "condition": "good"
+  },
+  {
+    "comp_id": "sold-trud-02",
+    "district": "Trudering",
+    "address": "Truderinger Str. 24, München",
+    "sqm": 62,
+    "rooms": 2,
+    "price": 552000,
+    "date": "2026-06-24",
+    "condition": "good"
+  },
+  {
+    "comp_id": "sold-trud-03",
+    "district": "Trudering",
+    "address": "Schmuckerweg 31, München",
+    "sqm": 138,
+    "rooms": 5,
+    "price": 1118000,
+    "date": "2026-07-28",
+    "condition": "good"
+  },
+  {
+    "comp_id": "sold-trud-04",
+    "district": "Trudering",
+    "address": "Kirchtruderinger Str. 38, München",
+    "sqm": 95,
+    "rooms": 4,
+    "price": 808000,
+    "date": "2026-08-25",
+    "condition": "good"
+  },
+  {
+    "comp_id": "sold-trud-05",
+    "district": "Trudering",
+    "address": "Feldbergstr. 45, München",
+    "sqm": 72,
+    "rooms": 3,
+    "price": 655000,
+    "date": "2026-09-30",
+    "condition": "renovated"
+  },
+  {
+    "comp_id": "sold-trud-06",
+    "district": "Trudering",
+    "address": "Bajuwarenstr. 52, München",
+    "sqm": 58,
+    "rooms": 2,
+    "price": 487000,
+    "date": "2026-10-20",
+    "condition": "dated"
+  }
+]
