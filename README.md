@@ -46,3 +46,18 @@ pytest tests/test_ranking.py -q
 ```
 
 Shared schemas for B/C: [`agent/schemas.py`](agent/schemas.py) and [`docs/CONTRACTS.md`](docs/CONTRACTS.md).
+
+## LangSmith (EU workspace)
+This hackathon project uses the **EU** host. Set in `.env`:
+```
+LANGSMITH_ENDPOINT=https://eu.api.smith.langchain.com
+LANGCHAIN_ENDPOINT=https://eu.api.smith.langchain.com
+```
+`agent/config.py` forces the EU endpoint even if a US URL is pasted by mistake.
+
+## What’s already wired on `main`
+| Package | Status |
+|---|---|
+| **A** Brain/memory/orchestrator | Wired |
+| **B** Market intelligence | Wired into `agent/graph.py` (`SUBAGENTS`, `search_listings`, skills) |
+| **C** Telegram / outreach / evals | Not on `main` yet |

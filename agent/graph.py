@@ -14,28 +14,30 @@ from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, FilesystemBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore
 
-from agent.config import DEFAULT_USER_ID, ORCH_MODEL
+from agent.config import DEFAULT_USER_ID, LANGSMITH_ENDPOINT, ORCH_MODEL
 from agent.prompts import ORCHESTRATOR_PROMPT
 from agent.tools.memory import MEMORY_TOOLS
 from agent.tools.ranking import RANKING_TOOLS
 
 logger = logging.getLogger(__name__)
+logger.info("LangSmith endpoint: %s", LANGSMITH_ENDPOINT)
 
 # Allow module import / Studio graph load before .env is filled in.
 if not os.getenv("OPENAI_API_KEY"):
     os.environ["OPENAI_API_KEY"] = "sk-placeholder-set-OPENAI_API_KEY-in-dotenv"
     logger.warning("OPENAI_API_KEY missing; using placeholder so the graph can load.")
 
-# --- Optional Person B / C imports (agent still boots without them) ---
+# --- Person B (market) + Person C (actions) imports ---
+# B is on main; C may still be landing. Keep try/except so Studio never hard-crashes.
 
 try:
-    from agent.subagents import SUBAGENTS  # type: ignore
+    from agent.subagents import SUBAGENTS
 except Exception as exc:  # noqa: BLE001
     logger.warning("Person B subagents not available yet: %s", exc)
     SUBAGENTS = []
 
 try:
-    from agent.tools.listings import search_listings  # type: ignore
+    from agent.tools.listings import search_listings
 
     LISTING_TOOLS = [search_listings]
 except Exception as exc:  # noqa: BLE001
