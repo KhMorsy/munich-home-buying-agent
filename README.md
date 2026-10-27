@@ -35,3 +35,14 @@ Only Person A (@KhMorsy) edits `agent/graph.py`. B (@shima78) exports `SUBAGENTS
 - Only touch the files you own. If you need a change in someone else's file, tell them.
 - Small commits, prefixed with your package: `[A] memory tools`, `[B] finance tool`, `[C] telegram notify`.
 - Never commit `.env`.
+
+## Local run (Person A scaffold)
+```bash
+python3.11 -m venv .venv && source .venv/bin/activate
+pip install -e '.[dev]'
+cp .env.example .env   # fill OPENAI_API_KEY (and later Tavily / Telegram / LangSmith)
+langgraph dev          # Studio + Agent Chat UI
+pytest tests/test_ranking.py -q
+```
+
+Shared schemas for B/C: [`agent/schemas.py`](agent/schemas.py) and [`docs/CONTRACTS.md`](docs/CONTRACTS.md).
