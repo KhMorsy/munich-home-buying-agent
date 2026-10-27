@@ -82,16 +82,16 @@ def check(send: bool) -> int:
 
             project = os.getenv("LANGSMITH_PROJECT", "default")
             report(os.getenv("LANGSMITH_TRACING", "").lower() == "true", "LANGSMITH_TRACING=true")
-            Client().list_projects(limit=1).__next__()  # auth check
+            client = Client()
+            next(client.list_projects(limit=1), None)  # auth check; may be empty on a fresh workspace
 
-            @traceable(name="setup_check", project_name=project)
+            @traceable(name="setup_check", project_name=project, client=client)
             def ping() -> str:
                 return "pong"
 
             ping()
+            client.flush()
             report(True, "LangSmith auth + test trace", f"project '{project}'")
-        except StopIteration:
-            report(True, "LangSmith auth")
         except Exception as exc:  # noqa: BLE001
             report(False, "LangSmith", str(exc)[:200])
     return failures
