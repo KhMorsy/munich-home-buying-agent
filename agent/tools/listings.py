@@ -165,18 +165,52 @@ def search_listings(
     """
     wanted = [d.strip().lower() for d in districts.split(",") if d.strip()]
     ptype = (property_type or "any").strip().lower()
+    seed = load_seed_listings()
 
-    results = [
-        listing
-        for listing in load_seed_listings()
-        if matches(listing, wanted, max_price, rooms_min, rooms_max, min_sqm, ptype)
-    ]
+    # Treat "about N rooms" as a small band when min==max (agents often pass both as 3).
+    rmin, rmax = rooms_min, rooms_max
+    if rmin > 0 and rmax > 0 and abs(rmin - rmax) < 1e-9:
+        rmin = max(0.0, rmin - 0.5)
+        rmax = rmax + 0.5
+
+    def _filter(
+        pool: list[Listing],
+        dists: list[str],
+        price_cap: float,
+        lo: float,
+        hi: float,
+        sqm: float,
+        ptype_local: str,
+    ) -> list[Listing]:
+        return [listing for listing in pool if matches(listing, dists, price_cap, lo, hi, sqm, ptype_local)]
+
+    results = _filter(seed, wanted, max_price, rmin, rmax, min_sqm, ptype)
+    relaxed: list[str] = []
+
+    # Soft fallbacks so the demo never returns an empty market for realistic criteria.
+    if not results and max_price > 0:
+        wider = max_price * 1.15 / PRICE_TOLERANCE  # effective ~+15% more headroom beyond base tol
+        results = _filter(seed, wanted, wider, rmin, rmax, min_sqm, ptype)
+        if results:
+            relaxed.append("widened_budget_15pct")
+    if not results and wanted:
+        results = _filter(seed, [], max_price or 0, rmin, rmax, min_sqm, ptype)
+        if results:
+            relaxed.append("dropped_district_filter")
+    if not results:
+        results = _filter(seed, wanted or [], max_price or 0, 0, 0, 0, ptype if ptype != "any" else "any")
+        if results:
+            relaxed.append("dropped_room_filters")
+    if not results:
+        results = list(seed)
+        relaxed.append("returned_full_seed_catalog")
+
     sources = ["seed"]
     if include_live:
         live = [
             listing
             for listing in search_live(wanted, max_price, rooms_min, ptype)
-            if matches(listing, [], max_price, rooms_min, rooms_max, min_sqm, "any")
+            if matches(listing, [], max_price, rmin, rmax, min_sqm, "any")
         ]
         seen = {r.listing_id for r in results}
         results += [listing for listing in live if listing.listing_id not in seen]
@@ -186,11 +220,20 @@ def search_listings(
     # cheapest per sqm first, so the shortlist starts with likely bargains
     results.sort(key=lambda r: r.price / max(r.sqm, 1))
     results = results[: max(1, int(limit))]
+    note = ""
+    if relaxed:
+        note = (
+            "Exact filters were empty; returned closest matches ("
+            + ", ".join(relaxed)
+            + "). Tell the buyer what was relaxed."
+        )
     return json.dumps(
         {
             "ok": True,
             "count": len(results),
             "sources": sources,
+            "relaxed": relaxed,
+            "note": note,
             "listings": [compact(r) for r in results],
         },
         ensure_ascii=False,
