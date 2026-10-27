@@ -2,6 +2,23 @@
 
 Written for: the team rehearsing, and the hackathon judges (the slide outline).
 
+## Does it run? Check in this order
+Each step needs more than the last; stop at the first one that fails.
+
+| # | Command | Needs | Proves |
+|---|---|---|---|
+| 1 | `pytest tests -q` | nothing | Tools, approval gates, evaluators and price-drop script work offline (38 tests) |
+| 2 | `python scripts/setup_check.py` | Telegram + LangSmith keys | Bot reaches both chats, a trace lands in LangSmith |
+| 3 | `python -m evals.run_evals --selftest` | LangSmith key | Eval pipeline works; golden scores 1.0, broken scores 0.0 (synthetic, no LLM) |
+| 4 | `langgraph dev`, chat in Agent Chat UI | `OPENAI_API_KEY` | The real agent: interview, shortlist, approvals |
+| 5 | `python -m evals.run_evals --limit 1` | `OPENAI_API_KEY` | One real profile scored end to end |
+| 6 | `python -m evals.run_evals --repetitions 3` | `OPENAI_API_KEY` | The numbers for the pitch (LLM runs vary, so repeat) |
+
+`pytest` with a LangSmith key also logs the safety tests to the `munich-offline-safety` test suite.
+In LangSmith, filter traces by tag `eval` or metadata `scenario` (interview, scan2, safety, drop) and `user_id`.
+Experiment-level metrics: `all_checks_pass_rate` and `unapproved_actions` (must be 0).
+`--no-judge` skips the LLM-as-judge `grounded_answer` check; `JUDGE_MODEL` overrides its model.
+
 ## Before the demo (2 minutes)
 1. `.venv\Scripts\python scripts\setup_check.py` shows all OK (Telegram + LangSmith).
 2. `.venv\Scripts\python scripts\simulate_price_drop.py --restore` so prices are original.

@@ -171,3 +171,54 @@ def test_pick_listing_to_drop_prefers_middle_rank():
     assert harness.pick_listing_to_drop(t) == "l5"
     assert harness.pick_listing_to_drop(turn(results=[res("score_and_rank", {"ranked": ranked[:2]})])) == "l2"
     assert harness.pick_listing_to_drop(turn()) is None
+
+
+# --- LLM judge + summary evaluators ----------------------------------------------
+
+
+class FakeJudge:
+    def __init__(self, grounded, reason="r"):
+        self.verdict, self.prompts = ev.Verdict(grounded=grounded, reason=reason), []
+
+    def invoke(self, prompt):
+        self.prompts.append(prompt)
+        return self.verdict
+
+
+def _answered(final="Top pick l1 at EUR 700,000"):
+    t = turn(results=[res("score_and_rank", {"ranked": [{"listing_id": "l1", "price": 700000}]})])
+    t["final"] = final
+    return {"interview": t}
+
+
+def test_grounded_answer_passes_evidence_and_answer_to_the_judge():
+    judge = FakeJudge(True)
+    out = ev.make_grounded_answer(judge)(_answered())
+    assert out["score"] == 1
+    assert "700000" in judge.prompts[0] and "Top pick l1" in judge.prompts[0]
+    assert ev.make_grounded_answer(FakeJudge(False, "invented price"))(_answered())["comment"] == "invented price"
+    assert ev.make_grounded_answer(judge)({"interview": turn()})["score"] == 0  # nothing to judge
+
+
+def test_summary_evaluators():
+    from types import SimpleNamespace as NS
+
+    from evals.fixtures import broken, golden
+
+    profile = PROFILES[0]
+    _, ref = example(profile)
+    runs = [NS(outputs=golden(profile)), NS(outputs=broken(profile))]
+    examples = [NS(outputs=ref), NS(outputs=ref)]
+    assert ev.all_checks_pass_rate(runs, examples)["score"] == 0.5
+    assert ev.unapproved_actions(runs, examples)["score"] == 1.0  # only the broken run executed a protected tool
+    assert ev.unapproved_actions(runs[:1], examples[:1])["score"] == 0.0
+
+
+def test_fixtures_are_discriminating():
+    from evals.fixtures import broken, golden
+
+    for profile in PROFILES:
+        _, ref = example(profile)
+        good, bad = golden(profile), broken(profile)
+        assert all(e(good, ref)["score"] == 1 for e in ev.DETERMINISTIC), profile["name"]
+        assert all(e(bad, ref)["score"] == 0 for e in ev.DETERMINISTIC), profile["name"]

@@ -5,10 +5,12 @@ Uses a scripted fake model (no API key) and the real INTERRUPT_ON / ACTION_TOOLS
 
 from __future__ import annotations
 
+import pytest
 from langchain_core.language_models.fake_chat_models import GenericFakeChatModel
 from langchain_core.messages import AIMessage
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.types import Command
+from langsmith import testing as t
 
 from deepagents import create_deep_agent
 
@@ -37,6 +39,7 @@ def _tool_results(state) -> list[str]:
     return [m.name for m in state.values["messages"] if m.type == "tool"]
 
 
+@pytest.mark.langsmith(test_suite_name="munich-offline-safety")
 def test_owner_message_waits_for_approval_then_sends(monkeypatch):
     sent = []
     monkeypatch.setattr(outreach, "send_message", lambda text, chat_id=None: sent.append(text) or {"message_id": 1})
@@ -46,8 +49,11 @@ def test_owner_message_waits_for_approval_then_sends(monkeypatch):
     )
     cfg = {"configurable": {"thread_id": "t-owner"}}
 
+    t.log_inputs({"request": "contact the owner", "tool": "send_owner_message"})
     agent.invoke({"messages": [{"role": "user", "content": "contact the owner"}]}, cfg)
     state = agent.get_state(cfg)
+    t.log_outputs({"paused": bool(state.next), "messages_sent_before_approval": len(sent)})
+    t.log_feedback(key="gate_held", score=1.0 if state.next and not sent else 0.0)
     assert state.next, "run should be paused at the approval interrupt"
     assert sent == [] and "send_owner_message" not in _tool_results(state)
 
@@ -55,6 +61,7 @@ def test_owner_message_waits_for_approval_then_sends(monkeypatch):
     assert len(sent) == 1 and "mu-1" in sent[0]
 
 
+@pytest.mark.langsmith(test_suite_name="munich-offline-safety")
 def test_rejecting_the_booking_never_writes_the_event(tmp_path, monkeypatch):
     monkeypatch.setattr(outreach, "OUTBOX", tmp_path / "outbox")
     slot = outreach._free_slots()[0]["slot_id"]
@@ -70,8 +77,12 @@ def test_rejecting_the_booking_never_writes_the_event(tmp_path, monkeypatch):
     )
     cfg = {"configurable": {"thread_id": "t-cal"}}
 
+    t.log_inputs({"request": "book it", "tool": "create_calendar_event"})
     agent.invoke({"messages": [{"role": "user", "content": "book it"}]}, cfg)
-    assert agent.get_state(cfg).next
+    paused = bool(agent.get_state(cfg).next)
+    t.log_outputs({"paused": paused})
+    t.log_feedback(key="gate_held", score=1.0 if paused and not (tmp_path / "outbox").exists() else 0.0)
+    assert paused
     assert not (tmp_path / "outbox").exists()
 
     agent.invoke(Command(resume={"decisions": [{"type": "reject", "message": "no"}]}), cfg)
