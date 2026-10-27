@@ -14,13 +14,13 @@ The full plan, including architecture, memory design and ranking, is in [docs/PL
 
 ## Work packages
 
-| Person | Package | Owns |
-|---|---|---|
-| A | Brain and Memory | `pyproject.toml`, `langgraph.json`, `.env.example`, `agent/config.py`, `agent/schemas.py`, `agent/graph.py`, `agent/prompts.py` (orchestrator), `agent/tools/memory.py`, `agent/tools/ranking.py`, `scripts/daily_scan.py`, `scripts/setup_cron.py`, deployment |
-| B | Market Intelligence | `data/seed_listings.json`, `data/seed_sold_history.json`, `agent/tools/listings.py`, `agent/tools/finance.py`, `agent/tools/comps.py`, `agent/subagents.py`, `agent/skills/*` |
-| C | Actions, Safety and Proof | Telegram + LangSmith setup, `agent/tools/notify.py`, `agent/tools/outreach.py`, `data/mock_calendar.json`, `scripts/simulate_price_drop.py`, `evals/*`, demo script and pitch |
+| Person | GitHub | Package | Owns |
+|---|---|---|---|
+| A | [@KhMorsy](https://github.com/KhMorsy) | Brain and Memory | `pyproject.toml`, `langgraph.json`, `.env.example`, `agent/config.py`, `agent/schemas.py`, `agent/graph.py`, `agent/prompts.py` (orchestrator), `agent/tools/memory.py`, `agent/tools/ranking.py`, `scripts/daily_scan.py`, `scripts/setup_cron.py`, deployment |
+| B | [@shima78](https://github.com/shima78) | Market Intelligence | `data/seed_listings.json`, `data/seed_sold_history.json`, `agent/tools/listings.py`, `agent/tools/finance.py`, `agent/tools/comps.py`, `agent/subagents.py`, `agent/skills/*` |
+| C | [@justKMM](https://github.com/justKMM) | Actions, Safety and Proof | Telegram + LangSmith setup, `agent/tools/notify.py`, `agent/tools/outreach.py`, `data/mock_calendar.json`, `scripts/simulate_price_drop.py`, `evals/*`, demo script and pitch |
 
-Only Person A edits `agent/graph.py`. B exports `SUBAGENTS` from `agent/subagents.py`. C exports `ACTION_TOOLS`, `INTERRUPT_ON` and `LIMIT_MIDDLEWARE` from `agent/tools/outreach.py`. A imports them at the merge point.
+Only Person A (@KhMorsy) edits `agent/graph.py`. B (@shima78) exports `SUBAGENTS` from `agent/subagents.py`. C (@justKMM) exports `ACTION_TOOLS`, `INTERRUPT_ON` and `LIMIT_MIDDLEWARE` from `agent/tools/outreach.py`. A imports them at the merge point.
 
 ## Timeline (minutes from kickoff)
 - **0-15**: A pushes the scaffold and `agent/schemas.py`. B starts the seed data. C sets up the Telegram bot and LangSmith.

@@ -145,9 +145,15 @@ A dataset of about 5 user profiles over the seed listings. The evaluators:
 
 ## Work packages (3 people, each owns separate files)
 
-Rule: only Person A edits `agent/graph.py`. Persons B and C export ready-made lists that A imports, so all three can push to `main` without merge conflicts.
+| Letter | Who | Package |
+|---|---|---|
+| A | @KhMorsy | Brain and Memory |
+| B | @shima78 | Market Intelligence |
+| C | @justKMM | Actions, Safety and Proof |
 
-### Shared contracts (Person A writes them in the first 10 minutes; everyone codes against them)
+Rule: only Person A (@KhMorsy) edits `agent/graph.py`. Persons B and C export ready-made lists that A imports, so all three can push to `main` without merge conflicts.
+
+### Shared contracts (Person A / @KhMorsy writes them in the first 10 minutes; everyone codes against them)
 `agent/schemas.py` (Pydantic / TypedDict):
 - `Listing`: `listing_id, url, title, district, address, sqm, rooms, price, year_built, condition, description, contact`
 - `FinanceResult`: `listing_id, total_purchase_cost, loan_amount, rate, monthly_payment, years, affordable: bool, notes`
@@ -155,7 +161,7 @@ Rule: only Person A edits `agent/graph.py`. Persons B and C export ready-made li
 - `NegotiationResult`: `listing_id, comps:[{price, sqm, date}], target_price, max_discount_pct, arguments:[str]`
 - `PropertyRecord`: a `Listing` plus `price_history, status, scores, rank, insight_summary, first_seen, last_seen`
 
-### WP-A "Brain and Memory" (Person A, the strongest LangGraph/Deep Agents dev)
+### WP-A "Brain and Memory" (Person A / @KhMorsy)
 Owns:
 - `pyproject.toml`, `langgraph.json`, `.env.example`, `agent/config.py`, `agent/schemas.py`
 - `agent/graph.py`, plus the orchestrator prompt in `agent/prompts.py`
@@ -168,7 +174,7 @@ Deliverables:
 2. By minute 50: the interview saves a profile, and the ranking works on mock subagent outputs.
 3. By minute 100: deployed, with the cron set.
 
-### WP-B "Market Intelligence" (Person B)
+### WP-B "Market Intelligence" (Person B / @shima78)
 Owns:
 - `data/seed_listings.json`: about 25 Munich listings across Schwabing, Maxvorstadt, Sendling, Pasing and Trudering, including 2 that need renovation and 3 that are overpriced.
 - `data/seed_sold_history.json`: about 30 comparable sales or past listings from the last 6 months.
@@ -181,7 +187,7 @@ Deliverables:
 2. By minute 40: `mortgage_plan` is unit-tested against a known annuity example.
 3. By minute 55: each subagent returns valid `*Result` JSON when invoked standalone with a small test script.
 
-### WP-C "Actions, Safety and Proof" (Person C)
+### WP-C "Actions, Safety and Proof" (Person C / @justKMM)
 Owns:
 - Setup: the Telegram bot via BotFather, your chat ID, a teammate's "owner" chat ID, and the LangSmith project and API keys.
 - `agent/tools/notify.py`: `send_telegram`

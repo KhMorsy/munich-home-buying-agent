@@ -1,7 +1,7 @@
 # Instructions for coding agents
 
 - Read `docs/PLAN.md` before making changes. It is the source of truth for the architecture, memory design, ranking and data contracts.
-- The human you are working with owns one work package (A, B or C, see `README.md`). Ask which one if it is unclear, and only edit files owned by that package.
+- Work package owners: A = @KhMorsy (Brain and Memory), B = @shima78 (Market Intelligence), C = @justKMM (Actions, Safety and Proof). Ask which package the human owns if unclear, and only edit files owned by that package.
 - Code against the shared contracts in `agent/schemas.py`. Do not change them without the team agreeing.
 - Only package A edits `agent/graph.py`. Packages B and C expose their pieces through the exports named in `README.md`.
 - Keep tools deterministic where the plan says so (`mortgage_plan`, `score_and_rank`, price-change detection). The LLM explains the results; it does not calculate them.
