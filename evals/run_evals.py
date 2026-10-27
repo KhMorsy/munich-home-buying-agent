@@ -25,6 +25,16 @@ from evals.evaluators import DETERMINISTIC, EVALUATORS, SUMMARY_EVALUATORS  # no
 from evals.harness import run_scenario  # noqa: E402
 
 
+def _mean_scores(results) -> dict[str, float]:
+    """Mean score per evaluator key across all examples of an experiment."""
+    scores: dict[str, list[float]] = {}
+    for row in results:
+        for res in row["evaluation_results"]["results"]:
+            if res.score is not None:
+                scores.setdefault(res.key, []).append(res.score)
+    return {k: round(sum(v) / len(v), 2) for k, v in scores.items()}
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--create-dataset", action="store_true")
@@ -63,11 +73,8 @@ def main() -> int:
                 experiment_prefix=f"selftest-{name}", metadata={"synthetic": True, "fixture": name},
                 max_concurrency=1, client=client,
             )
-            df = r.to_pandas() if hasattr(r, "to_pandas") else None
             print(f"selftest-{name}:", r.experiment_name)
-            if df is not None:
-                cols = [c for c in df.columns if c.startswith("feedback.")]
-                print(df[cols].mean().round(2).to_string())
+            print(_mean_scores(r))
         return 0
 
     results = evaluate(
